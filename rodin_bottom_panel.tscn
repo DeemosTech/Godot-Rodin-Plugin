@@ -1,0 +1,696 @@
+[gd_scene load_steps=31 format=3 uid="uid://denggguo4ukh"]
+
+[ext_resource type="Theme" uid="uid://jg2eib73ourg" path="res://addons/RodinBridge/ui/theme.tres" id="1_ejkgi"]
+[ext_resource type="Script" uid="uid://l8fks0bj1dle" path="res://addons/RodinBridge/rodin_bottom_panel.gd" id="1_k65g3"]
+[ext_resource type="PackedScene" uid="uid://vsgsgho1gjgq" path="res://addons/RodinBridge/ui/single_options.tscn" id="2_ejkgi"]
+[ext_resource type="PackedScene" uid="uid://c4qbau16ulfdb" path="res://addons/RodinBridge/ui/image_list.tscn" id="4_kh3wh"]
+[ext_resource type="PackedScene" uid="uid://ds66vanogkl71" path="res://addons/RodinBridge/ui/task_list.tscn" id="5_6s1n1"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_6s1n1"]
+allow_unpress = true
+
+[sub_resource type="GDScript" id="GDScript_kh3wh"]
+resource_name = "RBImageBox"
+script/source = "@tool extends VBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	$HBoxContainer/AlignOption.item_selected.connect(on_align_option_selected)
+	%ConditionOption.option_selected.connect(display_cb)
+	$Height.value_changed.connect(on_height_changed)
+
+func on_align_option_selected(i: int) -> void:
+	var value = $HBoxContainer/AlignOption.get_item_text(i)
+	option_trigger.emit(value, \"align\")
+
+func on_height_changed(value: float) -> void:
+	option_trigger.emit(value, \"height\")
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"image\"
+"
+
+[sub_resource type="GDScript" id="GDScript_6s1n1"]
+resource_name = "RBVoxelBox"
+script/source = "@tool extends VBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	%ConditionOption.option_selected.connect(display_cb)
+	$HBoxContainer/VoxelConditionCfg.item_selected.connect(on_voxel_condition_cfg_selected)
+	$Scale.value_changed.connect(on_voxel_condition_weight_changed)
+
+func on_voxel_condition_cfg_selected(i: int) -> void:
+	var value = $HBoxContainer/VoxelConditionCfg.get_item_text(i)
+	option_trigger.emit(value, \"voxel_condition_cfg\")
+
+func on_voxel_condition_weight_changed(value: float) -> void:
+	option_trigger.emit(value, \"voxel_condition_weight\")
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"voxel\"
+"
+
+[sub_resource type="GDScript" id="GDScript_vrr21"]
+resource_name = "RBPointCloudBox"
+script/source = "@tool extends VBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	%ConditionOption.option_selected.connect(display_cb)
+	$Uncertainty.value_changed.connect(on_pcd_condition_uncertainty_changed)
+
+func on_pcd_condition_uncertainty_changed(value: float) -> void:
+	option_trigger.emit(value, \"pcd_condition_uncertainty\")
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"pointCloud\"
+"
+
+[sub_resource type="GDScript" id="GDScript_1ceok"]
+resource_name = "RBTextToBox"
+script/source = "@tool extends HBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	$TextTo.option_trigger.connect(on_text_to_changed.bind(\"textTo\"))
+	$CheckBox.pressed.connect(on_bypass_pressed)
+
+func on_text_to_changed(value, prop: String) -> void:
+	option_trigger.emit(value, prop)
+
+func on_bypass_pressed() -> void:
+	option_trigger.emit($CheckBox.button_pressed, \"bypass\")
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_vrr21"]
+allow_unpress = true
+
+[sub_resource type="GDScript" id="GDScript_k65g3"]
+resource_name = "DirectTo3D"
+script/source = "@tool 
+class_name DirectTo3D extends CheckBox
+
+func _ready() -> void:
+	%TextToBox/TextTo.option_selected.connect(display_cb)
+	%GenTypeOption.item_selected.connect(disable_cb)
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"Text\"
+	var id = %GenTypeOption.selected
+	disable_cb(id)
+
+func disable_cb(id) -> void:
+	disabled = %GenTypeOption.get_item_text(id) == \"OneClick\"
+"
+
+[sub_resource type="GDScript" id="GDScript_ejkgi"]
+resource_name = "TextInput"
+script/source = "@tool
+class_name TextInput extends LineEdit
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	%TextToBox/TextTo.option_selected.connect(display_cb)
+	self.text_changed.connect(on_prompt_chanaged)
+
+func on_prompt_chanaged(value: String) -> void:
+	option_trigger.emit(value, \"text_input\")
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"Text\"
+"
+
+[sub_resource type="GDScript" id="GDScript_y06av"]
+resource_name = "RBComptibleBrowerError"
+script/source = "@tool
+class_name RBCompatibleBrowerError extends HBoxContainer
+
+func _ready() -> void:
+	var theme: Theme = RBUtils.get_editor_interface().get_editor_theme()
+	$Icon.texture = theme.get_icon(\"StatusError\", \"EditorIcons\")
+
+func update() -> void:
+	if RBWSServer.get_compatible_browser():
+		self.show()
+	else:
+		self.hide()
+"
+
+[sub_resource type="Image" id="Image_o4pcp"]
+data = {
+"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 122, 105, 46, 255, 120, 107, 136, 255, 119, 106, 173, 255, 120, 106, 206, 255, 119, 107, 239, 255, 119, 107, 239, 255, 120, 106, 206, 255, 119, 106, 173, 255, 119, 106, 135, 255, 119, 107, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 120, 106, 89, 255, 120, 107, 196, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 194, 255, 120, 105, 87, 255, 128, 128, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 117, 106, 24, 255, 120, 107, 191, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 187, 255, 121, 109, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 107, 62, 255, 119, 106, 231, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 229, 255, 119, 106, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 60, 255, 120, 107, 251, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 250, 255, 118, 105, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 116, 104, 22, 255, 119, 107, 229, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 253, 255, 120, 107, 198, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 197, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 227, 255, 115, 102, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 2, 255, 120, 106, 187, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 253, 255, 121, 107, 93, 255, 85, 85, 3, 255, 120, 106, 168, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 165, 255, 85, 85, 3, 255, 118, 105, 97, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 186, 255, 128, 128, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 105, 85, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 253, 255, 121, 107, 93, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 120, 106, 168, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 165, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 255, 118, 105, 97, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 118, 106, 82, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 106, 192, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 198, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 120, 106, 168, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 166, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 106, 202, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 107, 43, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 168, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 120, 106, 168, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 166, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 118, 105, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 107, 136, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 168, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 120, 106, 168, 255, 119, 107, 167, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 176, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 168, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 170, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 106, 209, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 168, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 204, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 242, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 168, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 242, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 167, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 119, 106, 171, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 237, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 106, 209, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 166, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 106, 170, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 203, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 175, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 166, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 128, 128, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 119, 107, 169, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 169, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 106, 135, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 165, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 119, 106, 171, 255, 128, 128, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 119, 107, 169, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 121, 103, 42, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 165, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 170, 255, 128, 128, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 119, 107, 169, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 254, 255, 120, 106, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 106, 192, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 197, 255, 85, 85, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 169, 255, 128, 128, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 85, 85, 3, 255, 119, 106, 201, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 107, 86, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 254, 255, 118, 105, 97, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 169, 255, 128, 128, 4, 0, 0, 0, 0, 0, 0, 0, 0, 255, 120, 107, 102, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 2, 255, 120, 106, 187, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 254, 255, 118, 105, 97, 255, 128, 128, 4, 255, 120, 107, 172, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 169, 255, 85, 85, 3, 255, 120, 107, 102, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 180, 255, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 121, 109, 21, 255, 120, 106, 228, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 254, 255, 120, 106, 202, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 201, 255, 119, 106, 254, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 106, 223, 255, 120, 105, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 119, 105, 58, 255, 119, 106, 250, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 248, 255, 118, 108, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 121, 108, 59, 255, 120, 106, 228, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 106, 225, 255, 118, 104, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 121, 109, 21, 255, 120, 106, 187, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 119, 107, 184, 255, 121, 107, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 128, 128, 2, 255, 118, 106, 84, 255, 120, 107, 191, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 255, 255, 120, 107, 189, 255, 120, 107, 83, 255, 128, 128, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 121, 103, 42, 255, 119, 107, 131, 255, 120, 106, 170, 255, 120, 106, 204, 255, 120, 106, 238, 255, 120, 106, 238, 255, 120, 106, 204, 255, 120, 106, 170, 255, 119, 107, 131, 255, 121, 108, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGBA8",
+"height": 32,
+"mipmaps": false,
+"width": 32
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_s6rj1"]
+image = SubResource("Image_o4pcp")
+
+[sub_resource type="LabelSettings" id="LabelSettings_t7phj"]
+font_size = 20
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_rjsy7"]
+resource_name = "RBGenTypeOption"
+script/source = "@tool extends OptionButton
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	self.item_selected.connect(on_gen_type_changed)
+	var timer = Timer.new()
+	timer.wait_time = 1
+	timer.autostart = true
+	timer.timeout.connect(force_gen_type_oneclick)
+	add_child(timer)
+
+func on_gen_type_changed(i: int) -> void:
+	var value = self.get_item_text(i)
+	option_trigger.emit(value, \"gen_type\")
+
+func force_gen_type_oneclick() -> void:
+	var i = self.get_selected_id()
+	if RBWSServer.get_compatible_browser() and self.get_item_text(i) != \"OneClick\":
+		self.select(0)
+		self.item_selected.emit(0)
+"
+
+[sub_resource type="GDScript" id="GDScript_o4pcp"]
+resource_name = "RBGenTypeBox"
+script/source = "@tool
+class_name RBGenTypeBox extends VBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	%GenTypeOption.item_selected.connect(display_cb)
+	%PolygonsOption.option_trigger.connect(on_polygons_changed)
+	$Quality.value_changed.connect(on_quality_changed)
+	
+func on_polygons_changed(value) -> void:
+	option_trigger.emit(value, \"polygons\")
+
+func on_quality_changed(value: float) -> void:
+	option_trigger.emit(value, \"quality\")
+
+func display_cb(i: int) -> void:
+	visible = %GenTypeOption.get_item_text(i) == \"OneClick\"
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_t7phj"]
+allow_unpress = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_1ceok"]
+allow_unpress = true
+
+[sub_resource type="GDScript" id="GDScript_rpquq"]
+resource_name = "RBMatBox"
+script/source = "@tool 
+class_name RBMatBox extends VBoxContainer
+
+signal option_trigger(value, prop:String)
+
+func _ready() -> void:
+	%MatTypeOption.option_trigger.connect(on_material_type_changed)
+	$HBoxContainer/Resolution.item_selected.connect(on_material_resolution_changed)
+
+func on_material_type_changed(value) -> void:
+	option_trigger.emit(value, \"material_type\")
+
+func on_material_resolution_changed(i: int) -> void:
+	var value = $HBoxContainer/Resolution.get_item_text(i)
+	option_trigger.emit(value, \"material_resolution\")
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_rjsy7"]
+allow_unpress = true
+
+[sub_resource type="GDScript" id="GDScript_s6rj1"]
+resource_name = "RBMatResolution"
+script/source = "@tool 
+class_name RBMatResolution extends OptionButton
+
+func _ready() -> void:
+	%ModeOption.option_selected.connect(display_cb)
+
+func display_cb(btn: Button) -> void:
+	var id = self.get_selected_id()
+	while self.item_count > 0:
+		self.remove_item(self.item_count - 1)
+	var items = [\"1K\"] if btn.name == \"Fast\" else [\"2K\", \"4K\"]
+	for i in range(items.size()):
+		self.add_item(items[i], i)
+	self.select(mini(id, self.item_count - 1))
+"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ejkgi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh3wh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6s1n1"]
+
+[sub_resource type="GDScript" id="GDScript_t7phj"]
+resource_name = "RBImageInputBox"
+script/source = "@tool
+class_name RBImageInputBox extends VBoxContainer
+
+# 暂时不需要关联属性变更
+
+func _ready() -> void:
+	%TextToBox/TextTo.option_selected.connect(display_cb)
+
+func display_cb(btn: Button) -> void:
+	visible = btn.name == \"Image\"
+"
+
+[sub_resource type="GDScript" id="GDScript_vetgi"]
+resource_name = "RBRightPanel"
+script/source = "@tool
+class_name RBRightPanel extends VBoxContainer
+
+func _ready() -> void:
+	%TextToBox/TextTo.option_selected.connect(display_cb)
+
+func display_cb(btn: Button) -> void:
+	var small = btn.name == \"Image\"
+	self.size_flags_stretch_ratio = 1 if small else 1.5
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ceok"]
+bg_color = Color(0.647059, 0.0784314, 0.286275, 1)
+
+[node name="RodinBottomPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ejkgi")
+script = ExtResource("1_k65g3")
+
+[node name="Box" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="BottomPanel" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LeftPanel" type="VBoxContainer" parent="Box/BottomPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ConditionOption" parent="Box/BottomPanel/LeftPanel" instance=ExtResource("2_ejkgi")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+
+[node name="image" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_6s1n1")
+text = "无"
+
+[node name="bbox" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_6s1n1")
+text = "包围盒"
+
+[node name="voxel" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_6s1n1")
+text = "体素"
+
+[node name="pointCloud" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_6s1n1")
+text = "点云"
+
+[node name="ImageBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+script = SubResource("GDScript_kh3wh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel/ImageBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Box/BottomPanel/LeftPanel/ImageBox/HBoxContainer"]
+layout_mode = 2
+text = "Align:    "
+
+[node name="AlignOption" type="OptionButton" parent="Box/BottomPanel/LeftPanel/ImageBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Bottom"
+popup/item_0/id = 0
+popup/item_1/text = "Center"
+popup/item_1/id = 1
+
+[node name="Height" type="SpinBox" parent="Box/BottomPanel/LeftPanel/ImageBox"]
+layout_mode = 2
+max_value = 1000.0
+step = 0.01
+value = 100.0
+alignment = 3
+prefix = "Height:"
+select_all_on_focus = true
+
+[node name="VoxelBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_6s1n1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel/VoxelBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Box/BottomPanel/LeftPanel/VoxelBox/HBoxContainer"]
+layout_mode = 2
+text = "Mode:   "
+
+[node name="VoxelConditionCfg" type="OptionButton" parent="Box/BottomPanel/LeftPanel/VoxelBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Strict"
+popup/item_0/id = 0
+popup/item_1/text = "Rough"
+popup/item_1/id = 1
+
+[node name="Scale" type="SpinBox" parent="Box/BottomPanel/LeftPanel/VoxelBox"]
+layout_mode = 2
+max_value = 1000.0
+step = 0.01
+alignment = 3
+prefix = "Scale:"
+select_all_on_focus = true
+
+[node name="PointCloudBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_vrr21")
+
+[node name="Uncertainty" type="SpinBox" parent="Box/BottomPanel/LeftPanel/PointCloudBox"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+alignment = 3
+prefix = "Uncertainty"
+
+[node name="TextToBox" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+script = SubResource("GDScript_1ceok")
+
+[node name="TextTo" parent="Box/BottomPanel/LeftPanel/TextToBox" instance=ExtResource("2_ejkgi")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Image" type="Button" parent="Box/BottomPanel/LeftPanel/TextToBox/TextTo"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_vrr21")
+text = "Image"
+
+[node name="Text" type="Button" parent="Box/BottomPanel/LeftPanel/TextToBox/TextTo"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_vrr21")
+text = "Text"
+
+[node name="CheckBox" type="CheckBox" parent="Box/BottomPanel/LeftPanel/TextToBox"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+text = "Direct to 3D"
+script = SubResource("GDScript_k65g3")
+
+[node name="TextInput" type="LineEdit" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+placeholder_text = "请输入Text"
+script = SubResource("GDScript_ejkgi")
+
+[node name="ComptibleBrowserError" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_y06av")
+
+[node name="Icon" type="TextureRect" parent="Box/BottomPanel/LeftPanel/ComptibleBrowserError"]
+layout_mode = 2
+texture = SubResource("ImageTexture_s6rj1")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="Box/BottomPanel/LeftPanel/ComptibleBrowserError"]
+layout_mode = 2
+text = "Please use Chrome version 116 or above"
+label_settings = SubResource("LabelSettings_t7phj")
+vertical_alignment = 1
+
+[node name="GenTypeOption" type="OptionButton" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "OneClick"
+popup/item_0/id = 0
+popup/item_1/text = "Manual"
+popup/item_1/id = 1
+script = SubResource("GDScript_rjsy7")
+
+[node name="GenTypeBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+script = SubResource("GDScript_o4pcp")
+
+[node name="PolygonsOption" parent="Box/BottomPanel/LeftPanel/GenTypeBox" instance=ExtResource("2_ejkgi")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Quad" type="Button" parent="Box/BottomPanel/LeftPanel/GenTypeBox/PolygonsOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_t7phj")
+text = "Quad"
+
+[node name="Pro" type="Button" parent="Box/BottomPanel/LeftPanel/GenTypeBox/PolygonsOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_t7phj")
+text = "Raw"
+
+[node name="Quality" type="SpinBox" parent="Box/BottomPanel/LeftPanel/GenTypeBox"]
+layout_mode = 2
+min_value = 2000.0
+max_value = 100000.0
+value = 18000.0
+rounded = true
+prefix = "Quality: "
+
+[node name="ModeOption" parent="Box/BottomPanel/LeftPanel" instance=ExtResource("2_ejkgi")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Default" type="Button" parent="Box/BottomPanel/LeftPanel/ModeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_1ceok")
+text = "Default"
+
+[node name="Detail" type="Button" parent="Box/BottomPanel/LeftPanel/ModeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_1ceok")
+text = "Focal"
+
+[node name="Smooth" type="Button" parent="Box/BottomPanel/LeftPanel/ModeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_1ceok")
+text = "Zero"
+
+[node name="Fast" type="Button" parent="Box/BottomPanel/LeftPanel/ModeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_1ceok")
+text = "Speedy"
+
+[node name="MatBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+script = SubResource("GDScript_rpquq")
+
+[node name="Label" type="Label" parent="Box/BottomPanel/LeftPanel/MatBox"]
+layout_mode = 2
+text = "材质配置"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel/MatBox"]
+layout_mode = 2
+
+[node name="MatTypeOption" parent="Box/BottomPanel/LeftPanel/MatBox/HBoxContainer" instance=ExtResource("2_ejkgi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Shaded" type="Button" parent="Box/BottomPanel/LeftPanel/MatBox/HBoxContainer/MatTypeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_rjsy7")
+text = "Shaded"
+
+[node name="PBR" type="Button" parent="Box/BottomPanel/LeftPanel/MatBox/HBoxContainer/MatTypeOption"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = SubResource("ButtonGroup_rjsy7")
+text = "PBR"
+
+[node name="Resolution" type="OptionButton" parent="Box/BottomPanel/LeftPanel/MatBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "1K"
+popup/item_0/id = 0
+script = SubResource("GDScript_s6rj1")
+
+[node name="Submit" type="Button" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ejkgi")
+text = "任务提交"
+
+[node name="Save GLTF" type="Button" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kh3wh")
+text = "保存GLTF"
+
+[node name="LoadTestBtn" type="Button" parent="Box/BottomPanel/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "加载测试"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel"]
+visible = false
+layout_mode = 2
+
+[node name="zh_CN" type="Button" parent="Box/BottomPanel/LeftPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "中文"
+
+[node name="en" type="Button" parent="Box/BottomPanel/LeftPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "en
+"
+
+[node name="HSeparator" type="HSeparator" parent="Box/BottomPanel/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6s1n1")
+
+[node name="VSeparator" type="VSeparator" parent="Box/BottomPanel"]
+layout_mode = 2
+
+[node name="ImageInputBox" type="VBoxContainer" parent="Box/BottomPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+script = SubResource("GDScript_t7phj")
+
+[node name="ImageList" parent="Box/BottomPanel/ImageInputBox" instance=ExtResource("4_kh3wh")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Box/BottomPanel/ImageInputBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6s1n1")
+
+[node name="VSeparator2" type="VSeparator" parent="Box/BottomPanel"]
+layout_mode = 2
+
+[node name="RightPanel" type="VBoxContainer" parent="Box/BottomPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = SubResource("GDScript_vetgi")
+
+[node name="PanelContainer" type="PanelContainer" parent="Box/BottomPanel/RightPanel"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ceok")
+
+[node name="TaskLabel" type="Label" parent="Box/BottomPanel/RightPanel/PanelContainer"]
+layout_mode = 2
+text = "任务列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TaskList" parent="Box/BottomPanel/RightPanel" instance=ExtResource("5_6s1n1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open File(s)"
+ok_button_text = "Open"
+file_mode = 1
+option_count = 1
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+autostart = true

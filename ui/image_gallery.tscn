@@ -1,0 +1,94 @@
+[gd_scene load_steps=4 format=3 uid="uid://54a1j5pdierm"]
+
+[ext_resource type="Script" path="./image_gallery.gd" id="1_d83ld"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08rpk"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.647059, 0.0784314, 0.286275, 0.172549)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.647059, 0.0784314, 0.286275, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="GDScript" id="GDScript_o4pcp"]
+resource_name = "RBImageInputReplaceButton"
+script/source = "@tool extends Button
+
+var file_dialog: FileDialog = FileDialog.new()
+
+signal load_image(path: String)
+
+func _ready() -> void:
+	init_filedialog()
+	add_child(file_dialog)
+	pressed.connect(with_file_dialog)
+
+func init_filedialog() -> void:
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_dialog.visible = false
+	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	#file_dialog.root_subfolder = \"/Users/karrycharon/Desktop/OutputImage\"
+	file_dialog.filters = [\"*.png; PNG Images\", \"*.jpg; JPEG Images\", \"*.jpeg; JPEG Images\",]
+	file_dialog.file_selected.connect(proc)
+	file_dialog.ok_button_text = \"确认\"
+	file_dialog.cancel_button_text = \"取消\"
+	file_dialog.title = \"请选择图片\"
+	file_dialog.dialog_hide_on_ok = true
+	file_dialog.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
+
+func proc(path: String) -> void:
+	if path.is_empty(): return
+	load_image.emit(path)
+
+func with_file_dialog() -> void:
+	file_dialog.popup_centered(Vector2i(400, 600))
+"
+
+[node name="ImageGallery" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_08rpk")
+script = ExtResource("1_d83ld")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="替换" type="Button" parent="Box/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "替换"
+script = SubResource("GDScript_o4pcp")
+
+[node name="删除" type="Button" parent="Box/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "X"
+
+[node name="Image" type="TextureRect" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 5
+stretch_mode = 4
+
+[node name="Info" type="Label" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
