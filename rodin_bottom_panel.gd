@@ -127,14 +127,11 @@ func save_gltf() -> PackedByteArray:
 			continue
 		var mesh: Node3D = obj
 		meshes[mesh] = Transform3D(mesh.global_transform)
-		var p := Vector3(mesh.global_position)
-		var r := Vector3(mesh.rotation)
 		#mesh.rotation.x = deg_to_rad(90)
 		## mesh.rotation.y = r.z
 		## mesh.rotation.z = r.x
 		#mesh.global_position.y = p.z
 		#mesh.global_position.z = p.y
-		mesh.global_transform = mesh.global_transform * RBRodinLoader.G2B()
 		gltf_document_save.append_from_scene(obj, gltf_state_save)
 	
 	var path = RBUtils.get_temp_dir().path_join("rodin_temp.glb")
