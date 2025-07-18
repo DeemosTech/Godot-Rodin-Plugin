@@ -414,18 +414,21 @@ func any_client_connected(socket: WebSocketPeer, event: Dictionary) -> void:
 	var e = {
 		"type": "ping_client",
 	}
+	var has_client := false
 	for s in self._sockets:
-		if s == socket:
-			continue
-		if "____id" in event:
-			e["____id"] = event["____id"]
-		if self.send(s, e) != OK:
-			continue
+		if s != socket:
+			has_client = true
+			break
+		# if "____id" in event:
+		# 	e["____id"] = event["____id"]
+		# if self.send(s, e) != OK:
+		# 	await self.on_recv
+		# 	continue
 
 	await self.get_tree().create_timer(0.2).timeout
 	e = {
 		"type": "any_client_connected_return",
-		"status": null if self._alive_clients.is_empty() else "ok",
+		"status": null if not has_client else "ok",
 	}
 	self._alive_clients.clear()
 	if "____id" in event:
