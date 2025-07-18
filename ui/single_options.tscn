@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://vsgsgho1gjgq"]
+
+[ext_resource type="Script" path="./single_options.gd" id="1_cv7i4"]
+
+[node name="ConditionOptions" type="HBoxContainer"]
+offset_right = 163.0
+offset_bottom = 31.0
+theme_override_constants/separation = 1
+script = ExtResource("1_cv7i4")

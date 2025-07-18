@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://jg2eib73ourg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y4e4f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k65g3"]
+bg_color = Color(0.863832, 0, 0.28274, 0.666667)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[resource]
+Button/styles/focus = SubResource("StyleBoxEmpty_y4e4f")
+Button/styles/pressed = SubResource("StyleBoxFlat_k65g3")

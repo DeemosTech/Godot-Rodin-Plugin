@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://ds66vanogkl71"]
+
+[ext_resource type="Script" path="./task_list.gd" id="1_pvlm7"]
+
+[node name="TaskList" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_pvlm7")
