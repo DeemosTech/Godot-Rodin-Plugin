@@ -1,16 +1,6 @@
 @tool
 class_name RBRodinLoader extends Node
 
-static func G2B() -> Transform3D:
-	return Transform3D(
-		Basis(
-			Vector3(1, 0, 0), 
-			Vector3(0, 0, 1), 
-			Vector3(0, -1, 0)
-		), 
-		Vector3.ZERO
-	)
-
 static func MODEL_FMT() -> Array:
 	return [ "glb", "gltf" ]
 
@@ -104,7 +94,7 @@ static func load_gltf_from_buffer(buffer: PackedByteArray, file=null) -> Node3D:
 	editor_scene_root.add_child(model)
 	model.set_owner(editor_scene_root)
 	model.translate(get_current_location())
-	model.global_transform = G2B().inverse() * model.global_transform
+	model.global_transform = model.global_transform
 	model.rotation.x = deg_to_rad(90)
 	return model
 
