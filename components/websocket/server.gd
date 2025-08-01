@@ -414,16 +414,18 @@ func any_client_connected(socket: WebSocketPeer, event: Dictionary) -> void:
 	var e = {
 		"type": "ping_client",
 	}
+	for s in self._sockets:
+		if s == socket:
+			continue
+		if "____id" in event:
+			e["____id"] = event["____id"]
+		if self.send(s, e) != OK:
+			continue
 	var has_client := false
 	for s in self._sockets:
 		if s != socket:
 			has_client = true
 			break
-		# if "____id" in event:
-		# 	e["____id"] = event["____id"]
-		# if self.send(s, e) != OK:
-		# 	await self.on_recv
-		# 	continue
 
 	await self.get_tree().create_timer(0.2).timeout
 	e = {
