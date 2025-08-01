@@ -7,7 +7,7 @@ class_name RodinButtomPanel extends Control
 var ws_server := RBWSServer.new()
 var task_manager := RBTaskManager.new()
 
-var port_range: Array[int] = [61883, 61893]
+var port_range: Array[int] = [61883, 61892]
 
 signal on_prop_changed(value, name: String)
 
@@ -114,30 +114,20 @@ func on_save_btn_click() -> void:
 
 func save_gltf() -> PackedByteArray:
 	#print(EditorInterface.get_edited_scene_root())
-	#print(EditorInterface.get_selected_paths()) # 
+	#print(EditorInterface.get_selected_paths()) #
 	var selected_nodes = RBUtils.get_editor_interface().get_selection().get_selected_nodes()
 	var gltf_document_save := GLTFDocument.new()
 	var gltf_state_save := GLTFState.new()
 	# 1. 从内存获取:
 	#gltf_document_save.append_from_buffer([], "", gltf_state_save)
 	# 2. 从场景获取:
-	var meshes := {}
 	for obj in selected_nodes:
 		if not (obj is Node3D):
 			continue
-		var mesh: Node3D = obj
-		meshes[mesh] = Transform3D(mesh.global_transform)
-		#mesh.rotation.x = deg_to_rad(90)
-		## mesh.rotation.y = r.z
-		## mesh.rotation.z = r.x
-		#mesh.global_position.y = p.z
-		#mesh.global_position.z = p.y
 		gltf_document_save.append_from_scene(obj, gltf_state_save)
-	
+
 	var path = RBUtils.get_temp_dir().path_join("rodin_temp.glb")
 	gltf_document_save.write_to_filesystem(gltf_state_save, path)
-	for mesh in meshes:
-		mesh.global_transform = meshes[mesh]
 	printerr("临时导出: ", path)
 	return FileAccess.get_file_as_bytes(path)
-	
+
