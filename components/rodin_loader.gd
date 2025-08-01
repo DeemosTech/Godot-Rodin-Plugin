@@ -31,7 +31,7 @@ static func load_rodin_model(event: Dictionary, test: bool = false) -> void:
 	var data = event.get("data", {})
 	var files = data.get("files", [])
 	var loc = data.get("location", [0, 0, 0])
-	set_current_location(Vector3(loc[0], loc[1], loc[2]))
+	set_current_location(Vector3(loc[0], loc[2], -loc[1]))
 
 	if files.is_empty():
 		return
@@ -94,7 +94,6 @@ static func load_gltf_from_buffer(buffer: PackedByteArray, file=null) -> Node3D:
 	editor_scene_root.add_child(model)
 	model.set_owner(editor_scene_root)
 	model.translate(get_current_location())
-	model.global_transform = model.global_transform
 	model.rotation.x = deg_to_rad(90)
 	return model
 
