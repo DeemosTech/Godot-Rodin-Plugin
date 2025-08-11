@@ -90,11 +90,12 @@ static func load_gltf_from_buffer(buffer: PackedByteArray, file=null) -> Node3D:
 	model.material_override = glb_importer_model_mesh.get_surface_material(0)
 	model.name = gltf_state_load.get_scene_name()
 
+	model.rotation_order = 2
+
 	var editor_scene_root = RBUtils.get_editor_interface().get_edited_scene_root()
 	editor_scene_root.add_child(model)
 	model.set_owner(editor_scene_root)
 	model.translate(get_current_location())
-	model.rotation.x = deg_to_rad(90)
 	return model
 
 static func load_model_pbr(files: Array) -> void:
