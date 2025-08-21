@@ -33,3 +33,36 @@ Then, enable RodinBridge in Project → Project Settings → Plugins.
 
 ![RodinBridge Download](source/Download.jpg)
 
+### Basic Usage
+
+The RodinBridge integrates most Rodin's generation functions directly in Godot. Operation requires interaction in both Godot and the Rodin webpage.
+
+**Single Image Generation**
+
+The Rodin webpage will automatically appear if not already open. On the Rodin webpage, activate the floating window using the toggle switch.
+
+
+You can monitor the generation process in the floating window. The generated asset will be automatically imported into Godot.
+
+![web](source/web.jpg)
+
+You can also import featured assets or generated assets by hovering on the target asset and press the emerged **Export** button
+
+### Advanced Functions:
+
+**ControlNet:**
+
+To enable ControlNet, select an object in Blender and choose your desired ControlNet mode. You can the adjest ControlNet settings as needed (Identical to Rodin webpage settings).
+
+**Multiview Mode:**
+
+You can use 'Add Image' to add more images as the input for generation. Rodin will automatically process them as the input for multiview generation.
+
+**Generation Mode:**
+
+You can choose between **One Click** mode and **Manual mode**. 
+
+**One Click**: Process runs without step-by-step guidance.
+
+**Manual**: Requires step-by-step operation in the floating window. The process is identical to that on Rodin webpage.
+
