@@ -1,0 +1,19 @@
+# Ignore all files
+/*
+
+# Ignore all macOS files
+.DS_Store
+
+# Except git files
+!.gitignore
+
+# Except license and readme
+!LICENSE
+!README.md
+
+# Except screenshots
+!/source/
+
+
+# Except /addons/
+!/addons/
