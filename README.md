@@ -39,6 +39,12 @@ The RodinBridge integrates most Rodin's generation functions directly in Godot. 
 
 **Single Image Generation**
 
+1. Click 'Replace Image' to replace the default image with the image you want to generate the 3D asset with.
+2. Choose 'None' in ControlNet options and choose 'One Click' for the fastest generation experience. The rest of the settings are identical to those on Rodin webpage.
+3. Once they are adjusted, click 'Submit' to begin the process.
+![Single Image Generate](source/SingleImage.jpg)
+
+
 The Rodin webpage will automatically appear if not already open. On the Rodin webpage, activate the floating window using the toggle switch.
 
 
@@ -48,15 +54,21 @@ You can monitor the generation process in the floating window. The generated ass
 
 You can also import featured assets or generated assets by hovering on the target asset and press the emerged **Export** button
 
+![floating window](source/floatingwindow.png)
+
 ### Advanced Functions:
 
 **ControlNet:**
 
-To enable ControlNet, select an object in Blender and choose your desired ControlNet mode. You can the adjest ControlNet settings as needed (Identical to Rodin webpage settings).
+To enable ControlNet, select an object in scene and choose your desired ControlNet mode. You can the adjest ControlNet settings as needed (Identical to Rodin webpage settings).
+
+![Controlnet Mode](source/Controlnet.jpg)
 
 **Multiview Mode:**
 
-You can use 'Add Image' to add more images as the input for generation. Rodin will automatically process them as the input for multiview generation.
+You can use 'Load Image' to add more images as the input for generation. Rodin will automatically process them as the input for multiview generation.
+
+![Multiview Mode](source/Multi.jpg)
 
 **Generation Mode:**
 
@@ -64,5 +76,9 @@ You can choose between **One Click** mode and **Manual mode**.
 
 **One Click**: Process runs without step-by-step guidance.
 
+![OneClick](source/OneClick.jpg)
+
 **Manual**: Requires step-by-step operation in the floating window. The process is identical to that on Rodin webpage.
+
+![Manual](source/Manul.jpg)
 
