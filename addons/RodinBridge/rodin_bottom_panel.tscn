@@ -1,7 +1,7 @@
 [gd_scene load_steps=31 format=3 uid="uid://denggguo4ukh"]
 
 [ext_resource type="Theme" uid="uid://jg2eib73ourg" path="res://addons/RodinBridge/ui/theme.tres" id="1_ejkgi"]
-[ext_resource type="Script" uid="uid://l8fks0bj1dle" path="res://addons/RodinBridge/rodin_bottom_panel.gd" id="1_k65g3"]
+[ext_resource type="Script" uid="uid://dma1lm1prws2i" path="res://addons/RodinBridge/rodin_bottom_panel.gd" id="1_k65g3"]
 [ext_resource type="PackedScene" uid="uid://vsgsgho1gjgq" path="res://addons/RodinBridge/ui/single_options.tscn" id="2_ejkgi"]
 [ext_resource type="PackedScene" uid="uid://c4qbau16ulfdb" path="res://addons/RodinBridge/ui/image_list.tscn" id="4_kh3wh"]
 [ext_resource type="PackedScene" uid="uid://ds66vanogkl71" path="res://addons/RodinBridge/ui/task_list.tscn" id="5_6s1n1"]
@@ -327,28 +327,28 @@ size_flags_horizontal = 3
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_6s1n1")
-text = "无"
+text = "None"
 
 [node name="bbox" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_group = SubResource("ButtonGroup_6s1n1")
-text = "包围盒"
+text = "Bounding Box"
 
 [node name="voxel" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_group = SubResource("ButtonGroup_6s1n1")
-text = "体素"
+text = "Voxel"
 
 [node name="pointCloud" type="Button" parent="Box/BottomPanel/LeftPanel/ConditionOption"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_group = SubResource("ButtonGroup_6s1n1")
-text = "点云"
+text = "Point Cloud"
 
 [node name="ImageBox" type="VBoxContainer" parent="Box/BottomPanel/LeftPanel"]
 unique_name_in_owner = true
@@ -566,7 +566,7 @@ script = SubResource("GDScript_rpquq")
 
 [node name="Label" type="Label" parent="Box/BottomPanel/LeftPanel/MatBox"]
 layout_mode = 2
-text = "材质配置"
+text = "Material"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Box/BottomPanel/LeftPanel/MatBox"]
 layout_mode = 2
@@ -606,7 +606,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ejkgi")
-text = "任务提交"
+text = "Submit"
 
 [node name="Save GLTF" type="Button" parent="Box/BottomPanel/LeftPanel"]
 unique_name_in_owner = true
@@ -677,7 +677,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1ceok")
 
 [node name="TaskLabel" type="Label" parent="Box/BottomPanel/RightPanel/PanelContainer"]
 layout_mode = 2
-text = "任务列表"
+text = "Task List"
 horizontal_alignment = 1
 vertical_alignment = 1
 

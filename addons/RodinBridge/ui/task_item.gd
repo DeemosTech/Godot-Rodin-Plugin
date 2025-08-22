@@ -24,7 +24,7 @@ func set_task(task: RBTask) -> void:
 	self.task = task
 	task.on_task_removed.connect(self.queue_free)
 	self.add_child(task)
-	self.Name = "任务: [%s]" % task.id
+	self.Name = "Task: [%s]" % task.id
 
 func cancel_cb() -> void:
 	task_cancelled.emit()

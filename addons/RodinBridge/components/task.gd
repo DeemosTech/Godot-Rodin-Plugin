@@ -92,7 +92,7 @@ func _process(delta: float) -> void:
 	self.job()
 
 func H() -> String:
-	return "任务[%s] -> " % self.id
+	return "Task[%s] -> " % self.id
 
 func set_data(d: Dictionary) -> void:
 	if not (d is Dictionary):
@@ -190,10 +190,10 @@ func status_info() -> String:
 	return TaskStatus.find_key(self.status)
 
 func task_info() -> String:
-	return self.H() + "状态[%s] -> 耗时[%.2fs]" % [self.status_info(), self.elapsed()]
+	return self.H() + "状态[%s] -> Time: [%.2fs]" % [self.status_info(), self.elapsed()]
 
 func info() -> String:
-	return "状态[%s] -> 耗时[%.2fs]" % [self.status_info(), self.elapsed()]
+	return "Status[%s] -> Time: [%.2fs]" % [self.status_info(), self.elapsed()]
 
 func elapsed() -> float:
 	return (Time.get_ticks_msec() - start_time) * 0.001

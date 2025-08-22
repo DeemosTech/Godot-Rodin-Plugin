@@ -196,7 +196,7 @@ func default_handler(socket: WebSocketPeer, event: Dictionary) -> void:
 	self.log_json(JSON.stringify({"type": etype, "data": edata}))
 
 func default(socket: WebSocketPeer, event: Dictionary) -> void:
-	print("默认消息: ", event)
+	print("default: ", event)
 	var e = {
 		"type": "default",
 		"data": event,
