@@ -14,7 +14,7 @@ func load_image(path: String) -> void:
 		var image = Image.load_from_file(path)
 		image_node.texture = ImageTexture.create_from_image(image)
 	var image_size = image_node.texture.get_size()
-	%Info.text = "图片尺寸: %d x %d" % [image_size.x, image_size.y]
+	%Info.text = "Image Size: %d x %d" % [image_size.x, image_size.y]
 
 func prepare_image() -> Dictionary:
 	var texture: Texture2D = image_node.texture
