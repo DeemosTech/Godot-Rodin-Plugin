@@ -39,10 +39,11 @@ The RodinBridge integrates most Rodin's generation functions directly in Godot. 
 
 **Single Image Generation**
 
-1. Click 'Replace Image' to replace the default image with the image you want to generate the 3D asset with.
-2. Choose 'None' in ControlNet options and choose 'One Click' for the fastest generation experience. The rest of the settings are identical to those on Rodin webpage.
+1. Click 'Replace Image' to replace the default image with the image you want to generate the 3D asset with. 
+2. Choose 'None' in ControlNet options and choose 'One Click' for the fastest generation experience. The rest of the settings are identical to those on Rodin webpage. 
 3. Once they are adjusted, click 'Submit' to begin the process.
-![Single Image Generate](source/SingleImage.jpg)
+<div align="center"><img src="source/SingleImage.jpg" height="800"></div>
+
 
 
 The Rodin webpage will automatically appear if not already open. On the Rodin webpage, activate the floating window using the toggle switch.
