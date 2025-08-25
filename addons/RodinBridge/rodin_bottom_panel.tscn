@@ -285,7 +285,7 @@ func display_cb(btn: Button) -> void:
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ceok"]
-bg_color = Color(0.647059, 0.0784314, 0.286275, 1)
+bg_color = Color(0.647059, 0.0784314, 0.286275, 0)
 
 [node name="RodinBottomPanel" type="Control"]
 layout_mode = 3
