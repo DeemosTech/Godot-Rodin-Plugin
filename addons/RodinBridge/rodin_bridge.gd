@@ -10,7 +10,7 @@ const TRANSLATION_DOMAIN := "com.rodin.rodin_bridge"
 func _enter_tree() -> void:
 	init_translation()
 	init_settings()
-	add_control_to_bottom_panel(panel, "Rodin Bridge")
+	add_control_to_dock(DOCK_SLOT_RIGHT_UL, panel)
 	add_child(task_manager)
 
 func init_settings() -> void:

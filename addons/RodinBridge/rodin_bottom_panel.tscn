@@ -287,7 +287,7 @@ func display_cb(btn: Button) -> void:
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ceok"]
 bg_color = Color(0.647059, 0.0784314, 0.286275, 0)
 
-[node name="RodinBottomPanel" type="Control"]
+[node name="RodinBridge" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -307,7 +307,7 @@ grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="BottomPanel" type="HBoxContainer" parent="Box"]
+[node name="BottomPanel" type="VBoxContainer" parent="Box"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -643,7 +643,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_6s1n1")
 
-[node name="VSeparator" type="VSeparator" parent="Box/BottomPanel"]
+[node name="VSeparator" type="HSeparator" parent="Box/BottomPanel"]
 layout_mode = 2
 
 [node name="ImageInputBox" type="VBoxContainer" parent="Box/BottomPanel"]
@@ -662,7 +662,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_6s1n1")
 
-[node name="VSeparator2" type="VSeparator" parent="Box/BottomPanel"]
+[node name="VSeparator2" type="HSeparator" parent="Box/BottomPanel"]
 layout_mode = 2
 
 [node name="RightPanel" type="VBoxContainer" parent="Box/BottomPanel"]
