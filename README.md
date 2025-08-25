@@ -13,7 +13,7 @@ Follow us on twitter [@deemosTech](http://twitter.com/deemosTech) to learn more 
 
 ## RodinBridge
 ### Introduction
-The Rodin Bridge for Godot is a powerful integration tool that supports most of the functions available on [Rodin's webpage](https://hyper3d.ai), allowing users to access image-based generation capabilities directly within the Godot editor environment. It enables users to replace target images, adjust generation settings, utilize ControlNet with selected objects, and choose between automatic and manual generation modes—all while maintaining a seamless workflow between Blender and the Rodin web interface through the convenient floating window functionality.
+The Rodin Bridge for Godot is a powerful integration tool that supports most of the functions available on [Rodin's webpage](https://hyper3d.ai), allowing users to access image-based generation capabilities directly within the Godot editor environment. It enables users to replace target images, adjust generation settings, utilize ControlNet with selected objects, and choose between automatic and manual generation modes—all while maintaining a seamless workflow between Godot and the Rodin web interface through the convenient floating window functionality.
 
 ![RodinBridge](source/preview.jpg)
 
